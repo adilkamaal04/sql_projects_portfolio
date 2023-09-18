@@ -1,3 +1,9 @@
+/*
+Covid 19 Data Exploration 
+Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+*/
+
+
 select *
 FROM [PORTFOLIO PRO1]..CovidVaccinations
 WHERE continent is not null
@@ -7,27 +13,31 @@ SELECT *
 FROM [PORTFOLIO PRO1]..CovidVaccinations
 Order By 3,4
 
--- Select Data tha we are going to be using
+-- Select Data we are going to be using
 
 Select Location, date, total_cases, new_cases, total_deaths, population
 From [PORTFOLIO PRO1]..CovidDeaths
 Order by 1,2
 
 -- Looking at Total Cases vs Total Deaths
+	
 -- Shows likelihood of dying if you contract  covid in your country
+	
 Select Location, date, total_cases,total_deaths, (CONVERT(float,total_deaths)/NULLIF(CONVERT(float,total_cases),0))*100 AS DeathPercentage
 From [PORTFOLIO PRO1]..CovidDeaths
 Where location like '%India%'
-Order by 1,2
+Order by 1,2;
 
 -- Looking at Total Cases vs Population
 -- Shows what percentage if population got Covid
 Select Location, date, Population, total_cases,  (total_cases/population)*100 AS PopulationInfection
 From [PORTFOLIO PRO1]..CovidDeaths
 Where location like '%India%'
-Order by 1,2
+Order by 1,2;
 
 -- Looking at countries with Highest Infection Rate compard to Population
+
+	
 Select Location, Population, MAX(total_cases) AS HighestInfectionCount,  Max((total_cases/population))*100 AS PercentPopulationInfected
 From [PORTFOLIO PRO1]..CovidDeaths
 --Where location like '%India%'
@@ -57,7 +67,8 @@ Where continent is not  null
 Group By continent
 Order by TotalDeathCount DESC;
 
--- GLOBAL NUMBERS
+
+-- GLOBAL NUMBERS 
 SELECT 
     -- date,
     SUM(new_cases) as total_cases,
